@@ -2,12 +2,15 @@ const express = require('express');
 const router = express.Router();
 const nodemailer = require('nodemailer');
 
-// Transporter setup (apne .env file se details lein)
+// 💡 FIX: 'service: gmail' हटा दिया गया है। 
+// Render Environment से HOST, PORT, और 'secure: true' का उपयोग किया गया है।
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: process.env.SMTP_HOST, // Render से smtp.gmail.com लेगा
+  port: process.env.SMTP_PORT, // Render से 465 लेगा
+  secure: true, // Port 465 के लिए यह ज़रूरी है
   auth: {
-    user: process.env.EMAIL_USER, // Aapka Gmail
-    pass: process.env.EMAIL_PASS, // Aapka Gmail App Password
+    user: process.env.EMAIL_USER, // आपका Gmail
+    pass: process.env.EMAIL_PASS, // आपका Gmail App Password
   },
 });
 
@@ -71,7 +74,7 @@ router.post('/send-email', (req, res) => {
 
   // Email bhejne ka logic
   const mailOptions = {
-    from: `"${name}" <${process.env.EMAIL_USER}>`, // Taki 'from' mein user ka naam dikhe
+    from: `"${name}" <${process.env.EMAIL_USER}>`,
     to: 'tejs.mahakal@gmail.com', // Yahaan aapka email ID aayega
     subject: emailSubject,
     html: emailHtml,
