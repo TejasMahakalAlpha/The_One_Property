@@ -9,7 +9,28 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+// 💡 FIX START: CORS Configuration updated to allow the Live Frontend URL
+const allowedOrigins = [
+    'http://localhost:5000', // Local Backend Port (Optional)
+    'http://localhost:5173', // Local Frontend Port (Optional)
+    'https://the-one-property-vfb9.onrender.com', // 👈 REQUIRED: आपका Live Frontend URL
+];
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        // Allow requests with no origin (like mobile apps or curl) and from allowed origins
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true, // Allow cookies/headers
+};
+
+app.use(cors(corsOptions));
+// 💡 FIX END
+
 app.use(express.json());
 
 app.use('/api/admin', require('./routes/adminRoute.js'));
