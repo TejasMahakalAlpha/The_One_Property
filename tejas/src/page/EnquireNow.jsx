@@ -4,6 +4,13 @@ import home1 from "../assets/house.png";
 import home2 from "../assets/apartment.png";
 import home3 from "../assets/modern-villa.png";
 
+// 💡 Environment variable ko load karein
+// Agar Vite use kar rahe hain (Most likely):
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; 
+
+// Agar Create React App (CRA) use kar rahe hain, toh is line ko uncomment karein:
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 const EnquiryNow = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -94,8 +101,16 @@ const EnquiryNow = () => {
         formType: 'GeneralEnquiry',
       };
 
+        // ⚠️ Safety check
+        if (!API_BASE_URL) {
+            console.error("API Base URL is not defined. Check your .env file and prefix.");
+            setFormStatus({ loading: false, submitted: false, error: 'Configuration Error: API endpoint not found.' });
+            return;
+        }
+
       try {
-        await axios.post('http://localhost:5000/api/form/send-email', dataToSend);
+        // ✅ Hardcoded URL ko Environment Variable se replace kiya gaya hai
+        await axios.post(`${API_BASE_URL}/api/form/send-email`, dataToSend);
         
         setFormStatus({ loading: false, submitted: true, error: null });
         setFormData({
@@ -121,12 +136,10 @@ const EnquiryNow = () => {
     <section className="w-full bg-white py-16">
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 px-6 items-start">
         <div>
-          {/* 'font-serif' हटाया गया */}
           <h2 className="text-4xl mb-8 text-gray-800">Enquiry Form</h2>
           <form className="space-y-5" onSubmit={handleSubmit} noValidate>
             
             <div>
-              {/* 'font-serif' हटाया गया */}
               <label htmlFor="firstName" className="block text-sm text-gray-700 mb-1">Your First Name</label>
               <input
                 type="text"
@@ -143,7 +156,6 @@ const EnquiryNow = () => {
             </div>
 
             <div>
-              {/* 'font-serif' हटाया गया */}
               <label htmlFor="lastName" className="block text-sm text-gray-700 mb-1">Your Last Name</label>
               <input
                 type="text"
@@ -160,7 +172,6 @@ const EnquiryNow = () => {
             </div>
 
             <div>
-              {/* 'font-serif' हटाया गया */}
               <label htmlFor="phone" className="block text-sm text-gray-700 mb-1">Mobile Number</label>
               <input
                 type="tel"
@@ -177,7 +188,6 @@ const EnquiryNow = () => {
             </div>
 
             <div>
-              {/* 'font-serif' हटाया गया */}
               <label htmlFor="email" className="block text-sm text-gray-700 mb-1">Email Address</label>
               <input
                 type="email"
@@ -194,13 +204,11 @@ const EnquiryNow = () => {
             </div>
 
             <div>
-                 {/* 'font-serif' हटाया गया */}
                  <label htmlFor="selectProperty" className="block text-sm text-gray-700 mb-1">Select Property</label>
                  <input id="selectProperty" type="text" className="w-full border border-gray-300 rounded-md p-3 bg-gray-100" />
             </div>
 
             <div>
-              {/* 'font-serif' हटाया गया */}
               <label htmlFor="propertyType" className="block text-sm text-gray-700 mb-1">Property Type</label>
               <input
                 type="text"
@@ -214,7 +222,6 @@ const EnquiryNow = () => {
             </div>
             
             <div>
-              {/* 'font-serif' हटाया गया */}
               <label htmlFor="message" className="block text-sm text-gray-700 mb-1">Message</label>
               <textarea
                 id="message"

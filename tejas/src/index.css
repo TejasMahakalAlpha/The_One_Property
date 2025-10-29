@@ -2,3 +2,27 @@
 
 
 
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+
+.group:hover .animate-scroll-final {
+  animation-play-state: paused;
+}
+
+
+.animate-scroll-final {
+  animation: highlightScroll 45s linear infinite;
+}
+
+@keyframes highlightScroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(calc(-316px * 10));
+  }
+}
