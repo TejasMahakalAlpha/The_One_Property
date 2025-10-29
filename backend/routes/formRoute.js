@@ -4,13 +4,14 @@ const nodemailer = require('nodemailer');
 
 // 💡 FIX: 'service: gmail' हटा दिया गया है। 
 // Render Environment से HOST, PORT, और 'secure: true' का उपयोग किया गया है।
+// formRoute.js फ़ाइल में, transporter सेटअप को ऐसे बदलें:
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST, // Render से smtp.gmail.com लेगा
-  port: process.env.SMTP_PORT, // Render से 465 लेगा
-  secure: true, // Port 465 के लिए यह ज़रूरी है
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  secure: false, // 👈 FIX: Port 587 के लिए यह FALSE होना चाहिए
   auth: {
-    user: process.env.EMAIL_USER, // आपका Gmail
-    pass: process.env.EMAIL_PASS, // आपका Gmail App Password
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
